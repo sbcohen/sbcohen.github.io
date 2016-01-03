@@ -21,8 +21,9 @@ html {
 }
 
 #home {
-  background: #fff;
-  height: auto;
+  background: url("../img/home-photo.jpg") center center no-repeat fixed;
+  background-size: cover;
+  height: 100vh;
   max-width: 100%;
   position: relative;
 }
