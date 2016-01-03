@@ -49,10 +49,8 @@ h2 {
   color: black;
   font-family: 'Lora', serif;
   font-style: italic;
-  font-size: 3.75rem;
-  margin-top: 4rem;
+  font-size: 4.5rem;
   margin-bottom: 4rem;
-  margin-left: 4rem;
 }
 
 h3 {
@@ -75,7 +73,7 @@ h5 {
   font-style: normal;
   font-size: 1.125rem;
   text-align: left;
-  line-height: initial;
+  line-height: 1.5rem;
 }
 
 h6 {
@@ -83,6 +81,19 @@ h6 {
   font-family: 'Lora', serif;
   font-style: normal;
   font-size: 1.125rem;
+}
+
+@media only screen and (max-width: 700px) {
+  h4 {
+    font-size: 3.5rem;
+  }
+  h5 {
+    font-size: 2.75rem;
+    line-height: 3.5rem;
+  }
+  h6 {
+    font-size: 2.75rem;
+  }
 }
 
 a {
@@ -129,6 +140,7 @@ a:hover {
   height: auto;
   max-width: 100%;
   position: relative;
+  padding: 4rem
 }
 
 .col-center {
@@ -141,12 +153,28 @@ a:hover {
   align-content: center;
 }
 
-.footer {
-  height: 2.5rem;
+#footer {
   width: 100%;
   background-color: black;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   text-decoration: none;
+  padding: 3rem 0;
+}
+
+.footer-links {
+  list-style-type: none;
+  text-align: center;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.footer-links li {
+  display: inline-block;
+}
+
+.footer-links li {
+  margin-right: 1.5625rem;
+}
+
+.footer-links li:last-child {
+  margin-right: 0;
 }
