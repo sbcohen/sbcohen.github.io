@@ -102,6 +102,10 @@ h6 {
   text-decoration-line: none;
 }
 
+.work-name a:visited {
+  text-decoration: none;
+}
+
 .banner {
   height: 2.5rem;
   width: 100%;
@@ -176,6 +180,11 @@ h6 {
 .footer-links li a:hover {
   text-decoration: none;
   opacity: 0.6;
+}
+
+.footer-links li a:visited {
+  text-decoration: none;
+  text-decoration-line: none;
 }
 
 .footer-links li:last-child {
