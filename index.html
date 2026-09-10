@@ -1,75 +1,666 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <title>Stefanie Cohen</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-  <!--Favicon-->
-  <link rel="apple-touch-icon" sizes="60x60" href="img/apple-icon-60x60.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
-  <link rel="icon" type="image/png" href="img/favicon.ico">
-  <!--Bootstrap-->
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-7s5uDGW3AHqw6xtJmNNtr+OBRJUlgkNJEo78P4b0yRw= sha512-nNo+yCHEyn0smMxSswnf/OnX6/KwJuZTlNZBjauKhTK0c+zT+q5JOCx0UFhXQ6rJR9jg6Es8gPuD2uZcYDLqSw==" crossorigin="anonymous">
-  <!--Style Sheet-->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
-  <link rel="stylesheet" href="./css/stefStyle.css">
-</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stefanie Cohen — Product | UX Research | Human Factors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Rubik+Doodle+Shadow&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: { ink: '#0F172A' },
+        fontFamily: {
+          serif: ['"Newsreader"', 'Georgia', 'serif'],
+          sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'monospace'],
+        }
+      }
+    }
+  }
+</script>
+<style>
+  :root { --ink: #1E293B; }
+  html { scroll-behavior: smooth; }
+  body { background: #FFFFFF; color: #1E293B; }
+  ::selection { background: var(--ink); color: #fff; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
-<body>
-  <section id="home">
-    <h1 class="bottomleft">Stefanie Cohen</h1>
-  </section>
-  <section id="work">
-    <h2>Work</h2>
-    <div class="container-fluid">
-      <div class="row text-center">
-        <div class="col-xs-12 col-sm-4 text-center work-name">
-          <a href="http://news.mlh.io/arduino-borealis-07-24-2015" target="_blank"><img class="hack-img" src="img/arduinoBorealis.jpg"></a>
-          <a href="http://news.mlh.io/arduino-borealis-07-24-2015" target="_blank"><h4>Arduino Borealis</h4></a>
-          <h5>Combines opaque hand-painted landscapes with LED matrix animations behind semi-translucent windows. Arduino controls RGB value, pattern, and timing. Tutorial featured on MLH.io and Hackaday.com.</h5>
+  .ink-text, .ink-border, .ink-fill-text { color: var(--ink); }
+  .ink-text { color: var(--ink); }
+  .ink-border { border-color: var(--ink); }
+
+  /* Hand-drawn single-stroke outline, reused for cards / buttons / badges / frames */
+  .sketch { border: 2px solid var(--ink); background: #fff; }
+  .r1 { border-radius: 255px 14px 225px 12px / 12px 225px 14px 255px; }
+  .r2 { border-radius: 14px 255px 12px 225px / 225px 12px 255px 14px; }
+  .r3 { border-radius: 20px 220px 240px 16px / 220px 16px 20px 240px; }
+  .r-frame { border-radius: 38px 10px 32px 12px / 12px 30px 10px 40px; }
+  .r-btn { border-radius: 220px 16px 200px 18px / 18px 200px 16px 220px; }
+
+  .sketch-btn:hover { background: var(--ink); color: #fff; }
+
+  .tag-mono { font-family: 'JetBrains Mono', monospace; letter-spacing: 0.02em; }
+
+  /* Underline for inline links */
+  .ink-link {
+    color: inherit; text-decoration: underline; text-decoration-style: solid;
+    text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: var(--ink);
+  }
+  .ink-link:hover { opacity: 0.7; }
+
+  /* My Expertise — accordion list */
+  .expertise-toggle { background: none; border: none; cursor: pointer; }
+  .expertise-icon { transition: transform 0.25s ease; flex-shrink: 0; }
+  .expertise-toggle[aria-expanded="true"] .expertise-icon { transform: rotate(45deg); }
+
+  .expertise-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s ease;
+  }
+  .expertise-panel.is-open { grid-template-rows: 1fr; }
+
+  .case-visual-text {
+    font-family: 'Rubik Doodle Shadow', 'Plus Jakarta Sans', sans-serif;
+    font-weight: 400;
+    line-height: 1;
+  }
+
+
+  .nav-link::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -4px; height: 1.5px;
+    background: var(--ink); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease;
+  }
+  .nav-link:hover::after { transform: scaleX(1); }
+
+  .card-hover { transition: transform 0.3s cubic-bezier(0.22,1,0.36,1); }
+  .card-hover:hover { transform: translateY(-4px) rotate(-0.3deg); }
+
+  .case-card.is-hidden { display: none; }
+
+  .filter-btn.is-active { background: var(--ink); color: #fff; }
+
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(15,23,42,0.5);
+    display: flex; align-items: center; justify-content: center; padding: 1.25rem;
+    z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+  }
+  .modal-overlay.is-open { opacity: 1; pointer-events: auto; }
+  .modal-panel { transform: translateY(16px) scale(0.98); transition: transform 0.3s cubic-bezier(0.22,1,0.36,1); }
+  .modal-overlay.is-open .modal-panel { transform: translateY(0) scale(1); }
+
+  .hw-img { filter: brightness(0) saturate(100%); }
+
+  /* Paint tube philosophy component */
+  .tube-btn { transition: transform 0.25s ease; background: none; border: none; padding: 0; cursor: pointer; }
+  .tube-btn:hover, .tube-btn:focus-visible { transform: translateX(6px); }
+  .tube-btn.is-active { transform: translateX(10px); }
+
+  .philo-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s ease;
+  }
+  .philo-panel.is-open { grid-template-rows: 1fr; }
+
+  .philo-panel-desktop {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0; /* overridden inline by JS per-tube */
+    transform: translateY(-50%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body class="font-sans antialiased">
+
+<!-- ========== NAV ========== -->
+<header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
+    <div>
+      <p class="font-serif font-semibold text-xl leading-none text-slate-900">Stefanie Cohen</p>
+      <p class="text-xs text-slate-500 mt-1">Product | UX Research | Human Factors</p>
+    </div>
+    <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-800">
+      <a href="#approach" class="nav-link">My Approach</a>
+      <a href="#work" class="nav-link">My Work</a>
+      <a href="#about" class="nav-link">About Me</a>
+      <a href="Stefanie_Cohen_Resume_2026.pdf" target="_blank" rel="noopener" class="sketch sketch-btn r-btn ink-text px-5 py-2 text-sm font-semibold">Resume (PDF)</a>
+    </nav>
+    <button id="menuBtn" class="md:hidden text-slate-800" aria-label="Open menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+  <div id="mobileMenu" class="hidden md:hidden border-t border-slate-200 px-6 py-4 flex flex-col gap-4 bg-white">
+    <a href="#approach" class="text-sm font-medium">My Approach</a>
+    <a href="#work" class="text-sm font-medium">My Work</a>
+    <a href="#about" class="text-sm font-medium">About Me</a>
+    <a href="Stefanie_Cohen_Resume_2026.pdf" target="_blank" rel="noopener" class="sketch r-btn ink-text text-center px-5 py-2 text-sm font-semibold">Resume (PDF)</a>
+  </div>
+</header>
+
+<!-- ========== HERO ========== -->
+<section id="hero">
+  <div class="max-w-4xl mx-auto px-6 lg:px-8 pt-16 pb-14 text-center">
+    <img src="handwriting-hi-stefanie.svg" alt="Hi, I'm Stefanie!" class="hw-img block mx-auto h-24 sm:h-28 lg:h-36 w-auto mb-8">
+    <p class="mt-2 max-w-2xl mx-auto text-lg text-slate-600 leading-relaxed">
+      I help teams navigate complex clinical rules and regulatory constraints to build digital solutions that improve outcomes.
+    </p>
+  </div>
+</section>
+
+<!-- ========== MY APPROACH (My Expertise + How I Build Delightful Systems) ========== -->
+<section id="approach">
+
+  <!-- My Expertise -->
+  <div class="max-w-5xl mx-auto px-6 lg:px-8 pt-6 pb-24">
+    <img src="handwriting-my-expertise.svg" alt="My Expertise" class="hw-img block mx-auto h-16 sm:h-20 lg:h-24 w-auto mb-14">
+
+    <div class="grid sm:grid-cols-2 gap-10 sm:gap-14 items-center">
+
+      <!-- Left: clickable accordion list -->
+      <div class="order-2 sm:order-1">
+
+        <svg viewBox="0 0 800 12" class="w-full h-3" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M2 6 C 150 2, 300 10, 450 5 C 600 1, 700 9, 798 5" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+        </svg>
+
+        <div>
+          <button class="expertise-toggle w-full flex items-center justify-between gap-4 py-5 text-left" data-topic="pm" aria-expanded="false">
+            <span class="tag-mono text-sm sm:text-base uppercase tracking-wide ink-text">Product Management</span>
+            <svg class="expertise-icon" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+              <path d="M10 3 C 9.7 3, 9.6 7, 9.8 10 C 10 13, 9.9 16, 10.1 17" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+              <path d="M3 10 C 6 9.8, 13 10.2, 17 9.9" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+            </svg>
+          </button>
+          <div class="expertise-panel" data-panel="pm">
+            <div class="min-h-0 overflow-hidden">
+              <p class="text-slate-700 leading-relaxed text-sm pb-6">
+                Years of working with start-up, mid-sized, and international teams have influenced my product and program management style, which centers on highly informed teams. After initial observation of company processes and personalities, I craft a way of working specific to the needs of my unique team. My technique is highly regarded, and I've taught others how to replicate it.
+              </p>
+            </div>
+          </div>
         </div>
-        <div class="col-xs-12 col-sm-4 work-name">
-          <a href="https://www.instagram.com/p/66AIIcofGd/?taken-by=stefcohen3" target="_blank"><img class="hack-img" src="img/RP.jpg"></a>
-          <a href="https://www.instagram.com/p/66AIIcofGd/?taken-by=stefcohen3" target="_blank"><h4>Record Printer</h4></a>
-          <h5>Frequencies present in music fall into a range associated with a particular colored paint. Miniature peristaltic pumps are activated depending on a frequency sampled and expel paint onto a spinning build platform. Intensity of music moves pumps on belt system.</h5>
+
+        <svg viewBox="0 0 800 12" class="w-full h-3" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M2 6 C 150 2, 300 10, 450 5 C 600 1, 700 9, 798 5" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+        </svg>
+
+        <div>
+          <button class="expertise-toggle w-full flex items-center justify-between gap-4 py-5 text-left" data-topic="ux" aria-expanded="false">
+            <span class="tag-mono text-sm sm:text-base uppercase tracking-wide ink-text">UX Research</span>
+            <svg class="expertise-icon" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+              <path d="M10 3 C 9.7 3, 9.6 7, 9.8 10 C 10 13, 9.9 16, 10.1 17" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+              <path d="M3 10 C 6 9.8, 13 10.2, 17 9.9" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+            </svg>
+          </button>
+          <div class="expertise-panel" data-panel="ux">
+            <div class="min-h-0 overflow-hidden">
+              <p class="text-slate-700 leading-relaxed text-sm pb-6">
+                My roots are in Lean Startup and Design Thinking. I completed the NSF <span class="tag-mono text-[12px]">I-Corps</span> program during my Master's degree and taught empathy mapping and value propositions. I'm even mentioned in the <a href="https://science.house.gov/2017/12//subcommittee-research-and-technology-hearing-lab-market-review-nsf-innovation" target="_blank" rel="noopener" class="ink-link">115th Congress Subcommittee on Research and Technology hearing from December 2017</a> for my experience in the I-Corps program. Lately, I've been applying the <a href="https://theconversation.com/gliding-not-searching-heres-how-to-reset-your-view-of-chatgpt-to-steer-it-to-better-results-205819" target="_blank" rel="noopener" class="ink-link">Transverse Gliding</a> methodology for problem scoping and solution ideation.
+              </p>
+            </div>
+          </div>
         </div>
-        <div class="col-xs-12 col-sm-4 work-name">
-          <a href="http://drone.gotechnica.org/" target="_blank"><img class="hack-img" src="img/DP2.JPG"></a>
-          <a href="http://drone.gotechnica.org/" target="_blank"><h4>Drone Pollock</h4></a>
-          <h5>IoT art hack event at Technica, fall 2015. Participants inputted coordinates online for an AR Parrot drone to flip paint onto a 15 ft canvas. Drone navigated canvas using OpenCV outside-in tracking. Roughly 200 contributors world-wide.</h5>
+
+        <svg viewBox="0 0 800 12" class="w-full h-3" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M2 6 C 150 2, 300 10, 450 5 C 600 1, 700 9, 798 5" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+        </svg>
+
+        <div>
+          <button class="expertise-toggle w-full flex items-center justify-between gap-4 py-5 text-left" data-topic="hf" aria-expanded="false">
+            <span class="tag-mono text-sm sm:text-base uppercase tracking-wide ink-text">Human Factors</span>
+            <svg class="expertise-icon" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+              <path d="M10 3 C 9.7 3, 9.6 7, 9.8 10 C 10 13, 9.9 16, 10.1 17" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+              <path d="M3 10 C 6 9.8, 13 10.2, 17 9.9" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+            </svg>
+          </button>
+          <div class="expertise-panel" data-panel="hf">
+            <div class="min-h-0 overflow-hidden">
+              <p class="text-slate-700 leading-relaxed text-sm pb-6">
+                After participating in human factors planning and activities while developing medical devices, I decided to formalize my training as a human factors engineer at Tufts University. I've studied and applied techniques in usability testing and heuristic evaluation, and completed risk and reliability training for conducting task analyses and failure modes effects analyses.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <svg viewBox="0 0 800 12" class="w-full h-3" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M2 6 C 150 2, 300 10, 450 5 C 600 1, 700 9, 798 5" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+        </svg>
+
+      </div>
+
+      <!-- Right: illustration -->
+      <div class="order-1 sm:order-2 flex justify-center">
+        <img src="stef-portrait.svg" alt="Illustrated portrait of Stefanie working at her laptop" class="w-full max-w-sm sm:max-w-none h-auto select-none">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- How I Build Delightful Systems -->
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 pt-6 pb-24">
+    <img src="handwriting-how-i-build.svg" alt="How I Build Delightful Systems" class="hw-img block mx-auto h-16 sm:h-20 lg:h-24 w-auto mb-14 mt-14">
+
+    <div class="grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-x-10 gap-y-1 sm:gap-y-2 items-start">
+
+      <!-- Demystify Complexity -->
+      <button class="tube-btn" data-topic="complexity" aria-expanded="false">
+        <img src="demystify-complexity.svg" alt="Demystify Complexity" class="w-60 sm:w-64">
+      </button>
+      <div class="philo-panel sm:hidden" data-panel="complexity">
+        <div class="min-h-0 overflow-hidden">
+          <div class="relative flex items-center justify-center py-10 px-8 my-2">
+            <img src="ho-swatch.svg" alt="" class="absolute inset-0 w-full h-full object-contain">
+            <p class="relative z-10 text-center text-slate-800 max-w-md text-base sm:text-lg leading-relaxed px-4">Translate dense clinical data and complex rules into clear, plain-language summaries to reduce cognitive load.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Safety by Design -->
+      <button class="tube-btn" data-topic="safety" aria-expanded="false">
+        <img src="safety-by-design.svg" alt="Safety by Design" class="w-60 sm:w-64">
+      </button>
+      <div class="philo-panel sm:hidden" data-panel="safety">
+        <div class="min-h-0 overflow-hidden">
+          <div class="relative flex items-center justify-center py-10 px-8 my-2">
+            <img src="hm-swatch.svg" alt="" class="absolute inset-0 w-full h-full object-contain">
+            <p class="relative z-10 text-center text-slate-800 max-w-md text-base sm:text-lg leading-relaxed px-4">Design away misuse risks and force-multiplier errors to ensure the safest path is the path of least resistance.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Minimize Burden -->
+      <button class="tube-btn" data-topic="burden" aria-expanded="false">
+        <img src="minimize-burden.svg" alt="Minimize Burden" class="w-60 sm:w-64">
+      </button>
+      <div class="philo-panel sm:hidden" data-panel="burden">
+        <div class="min-h-0 overflow-hidden">
+          <div class="relative flex items-center justify-center py-10 px-8 my-2">
+            <img src="hv-swatch.svg" alt="" class="absolute inset-0 w-full h-full object-contain">
+            <p class="relative z-10 text-center text-slate-800 max-w-md text-base sm:text-lg leading-relaxed px-4">Prioritize passive data collection and background workflow automation so managing health fits naturally into everyday life.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Keep Humans in Control -->
+      <button class="tube-btn" data-topic="control" aria-expanded="false">
+        <img src="humans-in-control.svg" alt="Keep Humans in Control" class="w-60 sm:w-64">
+      </button>
+      <div class="philo-panel sm:hidden" data-panel="control">
+        <div class="min-h-0 overflow-hidden">
+          <div class="relative flex items-center justify-center py-10 px-8 my-2">
+            <img src="hc-swatch.svg" alt="" class="absolute inset-0 w-full h-full object-contain">
+            <p class="relative z-10 text-center text-slate-800 max-w-md text-base sm:text-lg leading-relaxed px-4">Technology should support human decision-making, not replace it or impose rigid mandates.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop-only swatch overlay: each panel is pinned (via JS) to its tube's vertical center -->
+      <div id="philoOverlay" class="hidden sm:block sm:relative sm:self-stretch sm:col-start-2 sm:row-start-1 sm:row-span-4">
+        <div class="philo-panel philo-panel-desktop" data-panel="complexity">
+          <div class="min-h-0 overflow-hidden">
+            <div class="relative flex items-center justify-center py-10 px-8">
+              <img src="ho-swatch.svg" alt="" class="absolute inset-0 w-full h-full object-contain">
+              <p class="relative z-10 text-center text-slate-800 max-w-md text-base sm:text-lg leading-relaxed px-4">Translate dense clinical data and complex rules into clear, plain-language summaries to reduce cognitive load.</p>
+            </div>
+          </div>
+        </div>
+        <div class="philo-panel philo-panel-desktop" data-panel="safety">
+          <div class="min-h-0 overflow-hidden">
+            <div class="relative flex items-center justify-center py-10 px-8">
+              <img src="hm-swatch.svg" alt="" class="absolute inset-0 w-full h-full object-contain">
+              <p class="relative z-10 text-center text-slate-800 max-w-md text-base sm:text-lg leading-relaxed px-4">Design away misuse risks and force-multiplier errors to ensure the safest path is the path of least resistance.</p>
+            </div>
+          </div>
+        </div>
+        <div class="philo-panel philo-panel-desktop" data-panel="burden">
+          <div class="min-h-0 overflow-hidden">
+            <div class="relative flex items-center justify-center py-10 px-8">
+              <img src="hv-swatch.svg" alt="" class="absolute inset-0 w-full h-full object-contain">
+              <p class="relative z-10 text-center text-slate-800 max-w-md text-base sm:text-lg leading-relaxed px-4">Prioritize passive data collection and background workflow automation so managing health fits naturally into everyday life.</p>
+            </div>
+          </div>
+        </div>
+        <div class="philo-panel philo-panel-desktop" data-panel="control">
+          <div class="min-h-0 overflow-hidden">
+            <div class="relative flex items-center justify-center py-10 px-8">
+              <img src="hc-swatch.svg" alt="" class="absolute inset-0 w-full h-full object-contain">
+              <p class="relative z-10 text-center text-slate-800 max-w-md text-base sm:text-lg leading-relaxed px-4">Technology should support human decision-making, not replace it or impose rigid mandates.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========== MY WORK ========== -->
+<section id="work">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 py-24">
+
+    <img src="handwriting-my-work.svg" alt="Check out my work" class="hw-img block mx-auto h-16 sm:h-20 lg:h-24 w-auto mb-10">
+
+    <div id="filterBar" class="flex flex-wrap gap-3 mb-10" role="tablist" aria-label="Filter case studies">
+      <button data-filter="all" class="filter-btn is-active sketch r-btn tag-mono text-xs uppercase tracking-wide px-4 py-2 ink-text" role="tab" aria-selected="true">All Work</button>
+      <button data-filter="product" class="filter-btn sketch r-btn tag-mono text-xs uppercase tracking-wide px-4 py-2 ink-text" role="tab" aria-selected="false">Product Strategy</button>
+      <button data-filter="uxhf" class="filter-btn sketch r-btn tag-mono text-xs uppercase tracking-wide px-4 py-2 ink-text" role="tab" aria-selected="false">UX &amp; Human Factors</button>
+      <button data-filter="ai" class="filter-btn sketch r-btn tag-mono text-xs uppercase tracking-wide px-4 py-2 ink-text" role="tab" aria-selected="false">AI &amp; Prototyping</button>
+    </div>
+
+    <div id="caseGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-7">
+
+      <!-- Card 1 -->
+      <button class="case-card text-left sketch r-frame card-hover p-5 flex flex-col" data-categories="product uxhf" data-modal="c1">
+        <div class="card-visual sketch r-frame aspect-video mb-4 flex items-center justify-center overflow-hidden px-1">
+          <img src="wc-AZ.svg" alt="Watercolored 'AZ'" class="w-full h-full object-contain p-2">
+        </div>
+        <div class="flex flex-wrap gap-1.5 mb-3">
+          <span class="tag-mono text-[10px] uppercase ink-text border ink-border rounded px-2 py-0.5">Product Strategy</span>
+          <span class="tag-mono text-[10px] uppercase ink-text border ink-border rounded px-2 py-0.5">UX &amp; Human Factors</span>
+        </div>
+        <h3 class="font-serif text-xl mb-2 text-slate-900">FDA Class II Digital Therapeutic for AstraZeneca</h3>
+        <p class="text-sm text-slate-600 leading-relaxed flex-1">Managed a 20-person cross-functional team to design and develop a clinical decision support algorithm and multimodal remote monitoring device to help clinicians catch lung toxicity early.</p>
+        <p class="text-xs text-slate-500 leading-relaxed mt-3 border-t border-slate-200 pt-3"><span class="font-semibold text-slate-700">Key focus:</span> Ways of working for a novice SaMD team balancing FDA Class II strategy with a rare adverse event, while minimizing patient burden.</p>
+        <span class="ink-text text-sm font-semibold mt-4">See more →</span>
+      </button>
+
+      <!-- Card 2 -->
+      <button class="case-card text-left sketch r-frame card-hover p-5 flex flex-col" data-categories="product uxhf ai" data-modal="c2">
+        <div class="card-visual sketch r-frame aspect-video mb-4 flex items-center justify-center overflow-hidden px-1">
+          <img src="wc-pelly.svg" alt="Watercolored 'Pelly'" class="w-full h-full object-contain p-2">
+        </div>
+        <div class="flex flex-wrap gap-1.5 mb-3">
+          <span class="tag-mono text-[10px] uppercase ink-text border ink-border rounded px-2 py-0.5">Product Strategy</span>
+          <span class="tag-mono text-[10px] uppercase ink-text border ink-border rounded px-2 py-0.5">UX &amp; Human Factors</span>
+          <span class="tag-mono text-[10px] uppercase ink-text border ink-border rounded px-2 py-0.5">AI &amp; Prototyping</span>
+        </div>
+        <h3 class="font-serif text-xl mb-2 text-slate-900">AI Regulatory Intelligence for Pelly Systems Ltd</h3>
+        <p class="text-sm text-slate-600 leading-relaxed flex-1">Early product thinking, interaction concepts, and a functional prototype for how regulatory intelligence and player eligibility decision-making could exist inside the Pelly platform.</p>
+        <p class="text-xs text-slate-500 leading-relaxed mt-3 border-t border-slate-200 pt-3"><span class="font-semibold text-slate-700">Key focus:</span> Explainable AI confidence scores, external note-taking, and keeping humans in control of decisions.</p>
+        <span class="ink-text text-sm font-semibold mt-4">See more →</span>
+      </button>
+
+      <!-- Card 3 -->
+      <button class="case-card text-left sketch r-frame card-hover p-5 flex flex-col" data-categories="product uxhf" data-modal="c3">
+        <div class="card-visual sketch r-frame aspect-video mb-4 flex items-center justify-center overflow-hidden px-1">
+          <img src="wc-evi.svg" alt="Watercolored 'Evinova'" class="w-full h-full object-contain p-2">
+        </div>
+        <div class="flex flex-wrap gap-1.5 mb-3">
+          <span class="tag-mono text-[10px] uppercase ink-text border ink-border rounded px-2 py-0.5">Product Strategy</span>
+          <span class="tag-mono text-[10px] uppercase ink-text border ink-border rounded px-2 py-0.5">UX &amp; Human Factors</span>
+        </div>
+        <h3 class="font-serif text-xl mb-2 text-slate-900">Evinova Routine Care Feasibility &amp; Commercial Strategy</h3>
+        <p class="text-sm text-slate-600 leading-relaxed flex-1">Proposed recycling remote patient monitoring infrastructure out of rigid clinical trial environments and into routine care delivery.</p>
+        <p class="text-xs text-slate-500 leading-relaxed mt-3 border-t border-slate-200 pt-3"><span class="font-semibold text-slate-700">Key focus:</span> Worked with pharmaceutical brand teams to propose digital solutions supporting product launches.</p>
+        <span class="ink-text text-sm font-semibold mt-4">See more →</span>
+      </button>
+
+      <!-- Card 4 -->
+      <button class="case-card text-left sketch r-frame card-hover p-5 flex flex-col" data-categories="product" data-modal="c4">
+        <div class="card-visual sketch r-frame aspect-video mb-4 flex items-center justify-center overflow-hidden px-1">
+          <img src="wc-evi.svg" alt="Watercolored 'Evinova'" class="w-full h-full object-contain p-2">
+        </div>
+        <div class="flex flex-wrap gap-1.5 mb-3">
+          <span class="tag-mono text-[10px] uppercase ink-text border ink-border rounded px-2 py-0.5">Product Strategy</span>
+        </div>
+        <h3 class="font-serif text-xl mb-2 text-slate-900">Evinova RPM Operations &amp; Knowledge Hub</h3>
+        <p class="text-sm text-slate-600 leading-relaxed flex-1">Standardized cross-team knowledge bases, configuration rules, and operational blueprints for enterprise RPM deployments.</p>
+        <p class="text-xs text-slate-500 leading-relaxed mt-3 border-t border-slate-200 pt-3"><span class="font-semibold text-slate-700">Key focus:</span> Streamlined cross-functional handoffs between product, clinical research, and engineering teams.</p>
+        <span class="ink-text text-sm font-semibold mt-4">See more →</span>
+      </button>
+
+      <!-- Card 5 -->
+      <button class="case-card text-left sketch r-frame card-hover p-5 flex flex-col" data-categories="uxhf ai" data-modal="c5">
+        <div class="card-visual sketch r-frame aspect-video mb-4 flex items-center justify-center overflow-hidden px-1">
+          <img src="wc-tufts.svg" alt="Watercolored 'Tufts'" class="w-full h-full object-contain p-2">        
+        </div>
+        <div class="flex flex-wrap gap-1.5 mb-3">
+          <span class="tag-mono text-[10px] uppercase ink-text border ink-border rounded px-2 py-0.5">UX &amp; Human Factors</span>
+          <span class="tag-mono text-[10px] uppercase ink-text border ink-border rounded px-2 py-0.5">AI &amp; Prototyping</span>
+        </div>
+        <h3 class="font-serif text-xl mb-2 text-slate-900">Medication Round Tracker Prototype &amp; Safety Observation AI Agent</h3>
+        <p class="text-sm text-slate-600 leading-relaxed flex-1">Explored how rapid vibe coding (v0.dev) and structured AI agent scripts (SKILL.md) can accelerate clinical task analysis and usability testing.</p>
+        <p class="text-xs text-slate-500 leading-relaxed mt-3 border-t border-slate-200 pt-3"><span class="font-semibold text-slate-700">Key focus:</span> Applied human factors safety standards to natural-language AI tools to rapidly prototype high-stress clinical interfaces in minutes.</p>
+        <span class="ink-text text-sm font-semibold mt-4">See more →</span>
+      </button>
+
+      <!-- Card 6 -->
+      <button class="case-card text-left sketch r-frame card-hover p-5 flex flex-col" data-categories="uxhf ai" data-modal="c6">
+        <div class="card-visual sketch r-frame aspect-video mb-4 flex items-center justify-center overflow-hidden px-1">
+          <img src="wc-tufts.svg" alt="Watercolored 'Tufts'" class="w-full h-full object-contain p-2">        
+        </div>
+        <div class="flex flex-wrap gap-1.5 mb-3">
+          <span class="tag-mono text-[10px] uppercase ink-text border ink-border rounded px-2 py-0.5">UX &amp; Human Factors</span>
+          <span class="tag-mono text-[10px] uppercase ink-text border ink-border rounded px-2 py-0.5">AI &amp; Prototyping</span>
+        </div>
+        <h3 class="font-serif text-xl mb-2 text-slate-900">Improving Residential Fire Extinguisher Discoverability</h3>
+        <p class="text-sm text-slate-600 leading-relaxed flex-1">Used AI "Transverse Gliding" to propose how house fires could be contained earlier by incorporating fire extinguishers into interior design and still meet storage and mounting regulations.</p>
+        <p class="text-xs text-slate-500 leading-relaxed mt-3 border-t border-slate-200 pt-3"><span class="font-semibold text-slate-700">Key focus:</span> Researched problem prevalance, regulations and human factors standards, and used AI to propose aesthetic mounts that improve the accessibility of fire extinguishers in the home.</p>
+        <span class="ink-text text-sm font-semibold mt-4">See more →</span>
+      </button>      
+    </div>
+
+    <p id="noResults" class="text-sm text-slate-500 mt-8 hidden">No projects tagged for this filter yet.</p>
+  </div>
+</section>
+
+
+<!-- ========== ABOUT + FOOTER (ink: purple) ========== -->
+<section id="about">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 py-24">
+    <img src="handwriting-about-me.svg" alt="About Me" class="hw-img block mx-auto h-16 sm:h-20 lg:h-24 w-auto mb-10">
+    <div class="max-w-xl mx-auto">
+      <div class="sketch r2 p-8 space-y-5">
+        <div>
+          <p class="tag-mono text-[11px] uppercase tracking-wider ink-text mb-1">Based in</p>
+          <p class="text-slate-700">New York City</p>
+        </div>
+        <div>
+          <p class="tag-mono text-[11px] uppercase tracking-wider ink-text mb-1">Education</p>
+          <p class="text-slate-700">University of Maryland &amp; Tufts University</p>
+        </div>
+        <div>
+          <p class="tag-mono text-[11px] uppercase tracking-wider ink-text mb-1">Companies</p>
+          <p class="text-slate-700">Evinova, AstraZeneca, Medicrea</p>
+        </div>
+        <div>
+          <p class="tag-mono text-[11px] uppercase tracking-wider ink-text mb-1">Tools</p>
+          <p class="text-slate-700">Gemini, Claude, Lovable, v0, NotebookLM, Adobe Illustrator</p>
+        </div>
+        <div>
+          <p class="tag-mono text-[11px] uppercase tracking-wider ink-text mb-1">Outside of work</p>
+          <p class="text-slate-700">Travel, photography, digital illustration, acrylic painting</p>
         </div>
       </div>
     </div>
-  </section>
-  <section id="footer">
-    <ul class="footer-links">
-      <li><a href="https://twitter.com/stefcohen3" target="_blank"><h6>Twitter</h6></a></li>
-      <li><a href="https://www.instagram.com/stefcohen3/" target="_blank"><h6>Instagram</h6></a></li>
-      <li><a href="https://www.linkedin.com/in/stefaniecohen" target="_blank"><h6>LinkedIn</h6></a></li>
-      <li><a href="http://news.mlh.io/author/stefcohen" target="_blank"><h6>MLH</h6></a></li>
-      <li><a href="mailto:sbcohen92@gmail.com" target="_blank"><h6>Contact</h6></a></li>
-    </ul>
-  </section>
+  </div>
 
-  <script>
-    (function (i, s, o, g, r, a, m) {
-      i['GoogleAnalyticsObject'] = r;
-      i[r] = i[r] || function () {
-        (i[r].q = i[r].q || []).push(arguments)
-      }, i[r].l = 1 * new Date();
-      a = s.createElement(o),
-        m = s.getElementsByTagName(o)[0];
-      a.async = 1;
-      a.src = g;
-      m.parentNode.insertBefore(a, m)
-    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+  <!-- Hand-drawn horizontal divider -->
+  <div class="max-w-6xl mx-auto px-6 lg:px-8">
+    <svg viewBox="0 0 800 12" class="w-full h-3" preserveAspectRatio="none">
+      <path d="M2 6 C 150 2, 300 10, 450 5 C 600 1, 700 9, 798 5" fill="none" stroke="var(--ink)" stroke-width="1.5" style="transition: stroke 0.6s ease;"/>
+    </svg>
+  </div>
 
-    ga('create', 'UA-72134301-1', 'auto');
-    ga('send', 'pageview');
-  </script>
+  <!-- Footer -->
+  <footer class="max-w-6xl mx-auto px-6 lg:px-8 py-20 text-center">
+    <img src="handwriting-lets-build.svg" alt="Let's build something thoughtful together" class="hw-img block mx-auto h-14 sm:h-16 lg:h-20 w-auto mb-10">
+    <div class="flex flex-wrap items-center justify-center gap-6 text-sm font-medium mb-10 text-slate-700">
+      <a href="mailto:sbcohen92@gmail.com" class="ink-text hover:opacity-70 transition-opacity underline underline-offset-4">Email</a>
+      <a href="https://www.linkedin.com/in/stefaniecohen/" target="_blank" rel="noopener" class="ink-text hover:opacity-70 transition-opacity underline underline-offset-4">LinkedIn</a>
+      <a href="Stefanie_Cohen_Resume_2026.pdf" target="_blank" rel="noopener" class="ink-text hover:opacity-70 transition-opacity underline underline-offset-4">Resume (PDF)</a>
+    </div>
+    <p class="tag-mono text-xs text-slate-400">© <span id="year"></span> Stefanie Cohen. All rights reserved.</p>
+  </footer>
+</section>
+
+<!-- ========== CASE STUDY MODAL ========== -->
+<div id="modalOverlay" class="modal-overlay" aria-hidden="true">
+  <div class="modal-panel sketch r-frame bg-white max-w-2xl w-full max-h-[85vh] overflow-y-auto">
+    <div class="sticky top-0 bg-white border-b border-slate-200 px-7 py-5 flex items-center justify-between">
+      <p class="tag-mono text-xs uppercase tracking-wider ink-text">Case Study</p>
+      <button id="modalClose" class="text-slate-400 hover:text-slate-800 transition-colors" aria-label="Close">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="px-7 py-7">
+      <div id="modalImg" class="w-full aspect-video sketch r-frame flex items-center justify-center mb-6 overflow-hidden"></div>
+      <h3 id="modalTitle" class="font-serif text-3xl mb-4 text-slate-900"></h3>
+      <div id="modalBody" class="space-y-4 text-slate-700 leading-relaxed"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  document.getElementById('menuBtn').addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.toggle('hidden');
+  });
+
+  // My Expertise — accordion list. Exclusive: opening one closes any other that's open.
+  document.querySelectorAll('.expertise-toggle').forEach(btn => {
+    const topic = btn.dataset.topic;
+    const panel = document.querySelector(`.expertise-panel[data-panel="${topic}"]`);
+    if (!panel) return;
+    btn.addEventListener('click', () => {
+      const willOpen = !panel.classList.contains('is-open');
+      document.querySelectorAll('.expertise-toggle').forEach(b => b.setAttribute('aria-expanded', 'false'));
+      document.querySelectorAll('.expertise-panel').forEach(p => p.classList.remove('is-open'));
+      if (willOpen) {
+        panel.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  // How I Build Delightful Systems — paint tube toggles.
+  // Desktop/mouse: hovering a tube toggles its panel (hover again to hide).
+  // Touch devices: tapping the tube toggles its panel.
+  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  // Pin each desktop swatch panel to the vertical center of its own tube,
+  // so alignment holds no matter which panels are open/closed.
+  function alignDesktopPanels() {
+    const overlay = document.getElementById('philoOverlay');
+    if (!overlay || overlay.offsetParent === null) return; // hidden on mobile
+    const overlayTop = overlay.getBoundingClientRect().top;
+    document.querySelectorAll('.tube-btn').forEach(btn => {
+      const topic = btn.dataset.topic;
+      const panel = overlay.querySelector(`.philo-panel[data-panel="${topic}"]`);
+      if (!panel) return;
+      const btnRect = btn.getBoundingClientRect();
+      const centerY = (btnRect.top + btnRect.height / 2) - overlayTop;
+      panel.style.top = `${centerY}px`;
+    });
+  }
+  window.addEventListener('load', alignDesktopPanels);
+  window.addEventListener('resize', alignDesktopPanels);
+  alignDesktopPanels();
+  // Fonts/images can shift tube heights slightly after first paint
+  setTimeout(alignDesktopPanels, 150);
+  setTimeout(alignDesktopPanels, 500);
+
+  document.querySelectorAll('.tube-btn').forEach(btn => {
+    const topic = btn.dataset.topic;
+    const panels = document.querySelectorAll(`.philo-panel[data-panel="${topic}"]`);
+    if (!panels.length) return;
+    const toggle = () => {
+      let open = false;
+      panels.forEach(p => { open = p.classList.toggle('is-open'); });
+      btn.classList.toggle('is-active', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+    if (canHover) {
+      btn.addEventListener('mouseenter', toggle);
+    } else {
+      btn.addEventListener('click', toggle);
+    }
+    // Keyboard access on any device
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+    });
+  });
+
+  // Case study filter bar
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const caseCards = document.querySelectorAll('#caseGrid .case-card');
+  const noResults = document.getElementById('noResults');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => { b.classList.remove('is-active'); b.setAttribute('aria-selected', 'false'); });
+      btn.classList.add('is-active');
+      btn.setAttribute('aria-selected', 'true');
+      const filter = btn.dataset.filter;
+      let visible = 0;
+      caseCards.forEach(card => {
+        const cats = card.dataset.categories.split(' ');
+        const show = filter === 'all' || cats.includes(filter);
+        card.classList.toggle('is-hidden', !show);
+        if (show) visible++;
+      });
+      noResults.classList.toggle('hidden', visible !== 0);
+    });
+  });
+
+  // Case study modal
+  const modalData = {
+    c1: { title: 'FDA Class II Digital Therapeutic for AstraZeneca', body: [
+      'Detailed case study coming soon! The full write-up will walk through the 20-person cross-functional team structure and product decisions and tradeoffs based on team and process maturity.',
+      'Sections planned: the problem, the constraint (a rare, poorly defined adverse event), the ways-of-working framework built for a first-time SaMD team, and outcomes.' ] },
+    c2: { title: 'AI Regulatory Intelligence for Pelly Systems Ltd', body: [
+      'Detailed case study coming soon! The full write-up will cover literature review process, user interviews, identifying painpoints and opportunities, and proposing solution mechanisms.',
+      'Sections planned: how to introduce AI to novice and expert users, when to empower humans to do what humans do best, introducing compelling features that simultaneously provide utility to users and passively train AI.' ] },
+    c3: { title: 'Evinova Routine Care Feasibility & Commercial Strategy', body: [
+      'Detailed case study coming soon! The full write-up will cover the feasibility assessment to scale RPM infrastructure from clinical trials into routine care delivery.',
+      'Sections planned: scaling up a single crossfunctional team to deliver three products, conducting technical feasibility with quality and engineering subject matter experts, designing digital launch strategies to commercial pharmaceutical brand teams.' ] },
+    c4: { title: 'Evinova RPM Operations & Knowledge Hub', body: [
+      'Detailed case study coming soon! The full write-up will cover process optimization across portfolio strategy, scientific, and implementation teams and and establishment of a shared knowledge base.',
+      'Sections planned: stakeholder interviews and workflow modeling, establishing an iterative approval process, and deployment.' ] },
+    c5: { title: 'Medication Round Tracker Prototype & Safety Observation AI Agent', body: [
+      'Detailed case study coming soon! The full write-up will cover how I used v0.dev and structured agent scripts (SKILL.md) to prototype a clinical dosing tracker and accelerate clinical task analysis with AI agents.',
+      'Sections planned: developing the prototype and the human factors research tasks accelerated by AI agents.' ] },
+    c6: { title: 'Improving Residential Fire Extinguisher Discoverability', body: [
+      'Detailed case study coming soon! The full write-up will cover how I developed an aesthetic residential fire extinguisher mount to encourage prominent placement in homes.',
+      'Sections planned: understanding the problem, researching regulations and constraints, using AI to propose mechanisms, and solution selection.' ] }
+  };
+
+  const overlay = document.getElementById('modalOverlay');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalBody = document.getElementById('modalBody');
+  const modalImg = document.getElementById('modalImg');
+
+  function openModal(id) {
+    const data = modalData[id];
+    if (!data) return;
+    const sourceVisual = document.querySelector(`.case-card[data-modal="${id}"] .card-visual`);
+    modalImg.innerHTML = sourceVisual ? sourceVisual.innerHTML : '';
+    modalTitle.textContent = data.title;
+    modalBody.innerHTML = data.body.map(p => `<p>${p}</p>`).join('');
+    overlay.classList.add('is-open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    overlay.classList.remove('is-open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+  caseCards.forEach(card => card.addEventListener('click', () => openModal(card.dataset.modal)));
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+</script>
+
 </body>
-
 </html>
